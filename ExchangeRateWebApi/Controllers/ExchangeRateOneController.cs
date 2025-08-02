@@ -18,8 +18,8 @@ namespace ExchangeRateWebApi.Controllers
         [HttpPost]
         public ActionResult<ReturnExchangeRateDTO> Post([FromBody] ExchangeRateDTO exchangeRateDTO)
         {
-            _logger.LogInformation("***ExchangeRateOneController*** Solicitud recibida: {SourceCurrency} a {TargetCurrency} por {Amount}",
-                exchangeRateDTO.SourceCurrency, exchangeRateDTO.TargetCurrency, exchangeRateDTO.Amount);
+            _logger.LogInformation("*****ReturnExchangeRateDTO***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
+            exchangeRateDTO.SourceCurrency, exchangeRateDTO.TargetCurrency, exchangeRateDTO.Amount);
 
 
             var rate = ExchangeRateMockOne.GetRateOne(exchangeRateDTO);
