@@ -1,5 +1,5 @@
 ﻿using ExchangeRateComparator.Models;
-using ExchangeRateWebApi.ViewModel;
+using ExchangeRateComparator.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +22,14 @@ namespace ExchangeRateComparator.Services
         public async Task<decimal?> GetExchangeAsync(ExchangeRateRequest dto, string url)
         {
             var endpoint = $"{url}api/exchange-two";
-            var xmlRequest = new ExchangeRateXmlDTO
+            var xmlRequest = new XmlDTO
             {
                 SourceCurrency = dto.SourceCurrency,
                 TargetCurrency = dto.TargetCurrency,
                 Amount = dto.Amount
             };
 
-            var xmlSerializer = new XmlSerializer(typeof(ExchangeRateXmlDTO));
+            var xmlSerializer = new XmlSerializer(typeof(XmlDTO));
             using var ms = new MemoryStream();
             xmlSerializer.Serialize(ms, xmlRequest);
             ms.Position = 0;
@@ -42,8 +42,8 @@ namespace ExchangeRateComparator.Services
                 response.EnsureSuccessStatusCode();
 
                 var stream = await response.Content.ReadAsStreamAsync();
-                var xmlResponseSerializer = new XmlSerializer(typeof(ReturnExchangeRateXmlDTO));
-                var result = (ReturnExchangeRateXmlDTO?)xmlResponseSerializer.Deserialize(stream);
+                var xmlResponseSerializer = new XmlSerializer(typeof(ReturnXmlDTO));
+                var result = (ReturnXmlDTO?)xmlResponseSerializer.Deserialize(stream);
                 return result?.Result;
             }
             catch (Exception ex)

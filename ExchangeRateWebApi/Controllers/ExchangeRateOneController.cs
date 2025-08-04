@@ -18,7 +18,7 @@ namespace ExchangeRateWebApi.Controllers
         [HttpPost]
         public ActionResult<ReturnExchangeRateDTO> Post([FromBody] ExchangeRateDTO exchangeRateDTO)
         {
-            _logger.LogInformation("*****ReturnExchangeRateDTO***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
+            _logger.LogInformation("*****ExchangeRateOneController***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
             exchangeRateDTO.SourceCurrency, exchangeRateDTO.TargetCurrency, exchangeRateDTO.Amount);
 
 

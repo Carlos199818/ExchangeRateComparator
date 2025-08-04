@@ -1,5 +1,5 @@
 ﻿using ExchangeRateComparator.Models;
-using ExchangeRateWebApi.ViewModel;
+using ExchangeRateComparator.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace ExchangeRateComparator.Services
                 response.EnsureSuccessStatusCode();
 
                 var bodyText = await response.Content.ReadAsStringAsync();
-                var parsed = JsonSerializer.Deserialize<ReturnExchangeRateNestedDTO>(bodyText, options);
+                var parsed = JsonSerializer.Deserialize<ReturnNestedDTO>(bodyText, options);
 
                 return parsed?.Data?.Total;
             }

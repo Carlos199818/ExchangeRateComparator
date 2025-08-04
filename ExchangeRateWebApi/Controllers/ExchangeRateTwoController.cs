@@ -12,9 +12,19 @@ namespace ExchangeRateWebApi.Controllers
     [Produces("application/xml")]
     public class ExchangeRateTwoController : ControllerBase
     {
+        private readonly ILogger<ExchangeRateTwoController> _logger;
+
+        public ExchangeRateTwoController(ILogger<ExchangeRateTwoController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] ExchangeRateXmlDTO exchangeRateXml)
         {
+            _logger.LogInformation("*****ExchangeRateTwoController***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
+                exchangeRateXml.SourceCurrency, exchangeRateXml.TargetCurrency, exchangeRateXml.Amount);
+
             var data = new ExchangeRateDTO()
             {
                 SourceCurrency = exchangeRateXml.SourceCurrency,

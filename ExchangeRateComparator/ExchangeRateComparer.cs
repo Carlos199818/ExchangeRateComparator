@@ -1,5 +1,4 @@
 ﻿using ExchangeRateComparator.Models;
-using ExchangeRateWebApi.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +41,8 @@ namespace ExchangeRateComparator
             const string url = "http://localhost:5039/";
 
             var request = _userInputApp.GetExchangeRateRequest();
+
+            if (request == null) return; 
 
             _logger.LogInformation("Iniciando comparación de tasas para {Amount} {SourceCurrency} -> {TargetCurrency}", 
                 request.Amount, request.SourceCurrency, request.TargetCurrency);

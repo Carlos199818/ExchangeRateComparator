@@ -45,7 +45,16 @@ class Program
                 logger
             );
 
-            await comparer.RunAsync();
+            while (true)
+            {
+                await comparer.RunAsync();
+
+                Console.WriteLine("\n¿Deseas hacer otra comparación? (S/N): ");
+                var input = Console.ReadLine()?.Trim().ToUpper();
+
+                if (input != "S")
+                    break;
+            }
         }
         catch (Exception ex)
         {
