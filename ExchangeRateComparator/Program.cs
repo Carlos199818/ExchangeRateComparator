@@ -13,18 +13,17 @@ class Program
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Console()
-            .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day) // Guardar en archivo
+            .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
         try
         {
             var services = new ServiceCollection();
 
-            // Reemplazar el sistema de logging por Serilog
             services.AddLogging(loggingBuilder =>
             {
-                loggingBuilder.ClearProviders();                // Quitamos los proveedores por defecto
-                loggingBuilder.AddSerilog();                   // Agregamos Serilog
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddSerilog();
             });
 
             services.AddSingleton<HttpClient>();

@@ -29,8 +29,6 @@ namespace ExchangeRateWebApi.Controllers
                 return BadRequest("Disculpa, aun no tenemos esas divisas en nuestro sistema :( ");
             }
 
-            //var result = rate.Value * exchangeRateDTO.Amount;
-
             return Ok(new ReturnExchangeRateDTO { rate = rate.Value });
         }
     }
