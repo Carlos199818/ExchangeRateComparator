@@ -9,11 +9,11 @@ namespace ExchangeRateComparator.Helpers
 {
     public class validCurrency()
     {
-        public object validateCurrencies(string currency)
+        public object validateCurrencies(ExchangeRateRequest currency)
         {
             var currencies = new[] { "DOP", "USD", "EUR" };
 
-            if (!currencies.Contains(currency.ToUpper()) || !currencies.Contains(currency.ToUpper()))
+            if (!currencies.Contains(currency.SourceCurrency.ToUpper()) || !currencies.Contains(currency.TargetCurrency.ToUpper()))
             {
                 return null;
             }
