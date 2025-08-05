@@ -3,6 +3,7 @@ services:
     build:
       context: ./ExchangeRateWebApi
       dockerfile: Dockerfile
+    image: cas18071998/webapitestbanre:latest
     ports:
       - "5039:5039"
     networks:
@@ -12,6 +13,7 @@ services:
     build:
       context: ./ExchangeRateComparator
       dockerfile: Dockerfile
+    image: cas18071998/consoletestbanre:latest
     depends_on:
       - webapitestbanre
     environment:
