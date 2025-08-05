@@ -1,6 +1,7 @@
 ﻿using ExchangeRateWebApi.Mock;
 using ExchangeRateWebApi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ExchangeRateWebApi.Controllers
 {
@@ -18,8 +19,14 @@ namespace ExchangeRateWebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] ExchangeRateNestedDTO exchangeRateNested)
         {
-            _logger.LogInformation("*****ExchangeRateThreeController***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
+            _logger.LogInformation("*****ExchangeRateThreeController***** Recibida solicitud: {SourceCurrency} -> {TargetCurrency}, monto: {Amount}",
                 exchangeRateNested.Exchange.SourceCurrency, exchangeRateNested.Exchange.TargetCurrency, exchangeRateNested.Exchange.Amount);
+            
+            if (exchangeRateNested.Exchange.SourceCurrency == exchangeRateNested.Exchange.TargetCurrency)
+            {
+                _logger.LogInformation("El usuario esta utilizando la misma moneda para origen y para destino");
+                return BadRequest("Disculpa, tiene que utilizar monedas distintas para hacer la conversion X( ");
+            }
 
             var data = new ExchangeRateDTO
             {
@@ -27,6 +34,7 @@ namespace ExchangeRateWebApi.Controllers
                 TargetCurrency = exchangeRateNested.Exchange.TargetCurrency,
                 Amount = exchangeRateNested.Exchange.Amount
             };
+
 
             var result = ExchangeRateMockThree.GetRateThree(data);
 

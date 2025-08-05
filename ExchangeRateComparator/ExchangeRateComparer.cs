@@ -35,11 +35,25 @@ namespace ExchangeRateComparator
             _logger = logger;
         }
 
+        decimal TruncateDecimal(decimal value, int decimals)
+{
+    decimal factor = (decimal)Math.Pow(10, decimals);
+    return Math.Truncate(value * factor) / factor;
+}
+
         public async Task RunAsync()
         {
             var baseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "http://localhost:5039";
 
             var request = _userInputApp.GetExchangeRateRequest();
+
+            var validCurrencies = new validCurrency().validateCurrencies;
+
+            if(validCurrencies(request) == null)
+            {
+                Console.WriteLine("Moneda no disponible.");
+                return;
+            }
 
             if (request == null) return; 
 
@@ -61,37 +75,30 @@ namespace ExchangeRateComparator
                 ("THREE", await _serviceThree.GetExchangeAsync(request, baseUrl))
             };
 
-            foreach (var result in results)
-            {
-                _logger.LogInformation("Resultado de {Api}: {Result}", result.Api, result.Result?.ToString("0.00") ?? "Error");
-            }
-
             var best = results
                 .Where(r => r.Result.HasValue)
                 .OrderByDescending(r => r.Result.Value)
                 .FirstOrDefault();
             
-            if (best.Result.HasValue)
-            {
-                _logger.LogInformation("La mejor oferta es de {Api} con una tasa de {Rate}", best.Api, best.Result.Value);
-            }
-            else
-            {
-                _logger.LogWarning("No se pudo obtener ninguna tasa de cambio.");
-            }
-            
             foreach (var result in results)
             {
-                Console.WriteLine($"{result.Api}: {(result.Result?.ToString("0.00") ?? "No fue posible conseguir la tasa")}");
+                if (!result.Result.HasValue)
+                {
+                    Console.WriteLine("No fue posible conseguir la tasa");
+                    _logger.LogWarning("No se pudo obtener ninguna tasa de cambio.");
+
+                }
+                Console.WriteLine($"{result.Api}-EXCHANGE ofrece: {result.Result:F3}");
             }
 
             if (best.Result.HasValue)
             {
-                Console.WriteLine($"\nLa mejor oferta es de {best.Api} con una tasa de {best.Result.Value} lo que le hace un total de: {best.Result.Value * request.Amount}");
+                Console.WriteLine($"\nLa mejor oferta es de {best.Api} con una tasa de {best.Result.Value:F2} lo que le hace un total de: {(best.Result.Value * request.Amount):F2}");
             }
             else
             {
                 Console.WriteLine("\nNo se pudo obtener ninguna tasa.");
+                _logger.LogWarning("No se pudo obtener ninguna tasa.");
             }
         }
     }

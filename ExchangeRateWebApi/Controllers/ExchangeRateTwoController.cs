@@ -22,8 +22,14 @@ namespace ExchangeRateWebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] ExchangeRateXmlDTO exchangeRateXml)
         {
-            _logger.LogInformation("*****ExchangeRateTwoController***** Recibida solicitud: {Source} -> {Target}, monto: {Amount}",
+            _logger.LogInformation("*****ExchangeRateTwoController***** Recibida solicitud: {SourceCurrency} -> {TargetCurrency}, monto: {Amount}",
                 exchangeRateXml.SourceCurrency, exchangeRateXml.TargetCurrency, exchangeRateXml.Amount);
+
+            if (exchangeRateXml.SourceCurrency == exchangeRateXml.TargetCurrency)
+            {
+                _logger.LogInformation("El usuario esta utilizando la misma moneda para origen y para destino");
+                return BadRequest("Disculpa, tiene que utilizar monedas distintas para hacer la conversion X( ");
+            }
 
             var data = new ExchangeRateDTO()
             {
