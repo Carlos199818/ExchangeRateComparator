@@ -1,0 +1,26 @@
+services:
+  webapi:
+    build:
+      context: ./ExchangeRateWebApi
+      dockerfile: Dockerfile
+    ports:
+      - "5039:5039"
+    networks:
+      - exchangenet
+
+  console:
+    build:
+      context: ./ExchangeRateComparator
+      dockerfile: Dockerfile
+    depends_on:
+      - webapi
+    environment:
+      API_BASE_URL: http://webapi:5039/api/
+    networks:
+      - exchangenet
+    stdin_open: true
+    tty: true  
+
+networks:
+  exchangenet:
+    driver: bridge

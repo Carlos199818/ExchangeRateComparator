@@ -20,7 +20,6 @@ namespace ExchangeRateComparator
         private readonly UserInputApp _userInputApp;
         private readonly ILogger<ExchangeRateComparer> _logger;
 
-        private readonly string _baseUrl = "http://localhost:5039/";
 
         public ExchangeRateComparer(
             IExchangeService serviceOne, 
@@ -38,7 +37,7 @@ namespace ExchangeRateComparator
 
         public async Task RunAsync()
         {
-            const string url = "http://localhost:5039/";
+            var baseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "http://localhost:5039";
 
             var request = _userInputApp.GetExchangeRateRequest();
 
@@ -47,11 +46,19 @@ namespace ExchangeRateComparator
             _logger.LogInformation("Iniciando comparación de tasas para {Amount} {SourceCurrency} -> {TargetCurrency}", 
                 request.Amount, request.SourceCurrency, request.TargetCurrency);
 
+            if (string.IsNullOrEmpty(baseUrl))
+            {
+                Console.WriteLine("La variable de entorno API_BASE_URL no está configurada.");
+                return;
+            }
+
+            _logger.LogInformation($"Usando API_BASE_URL: {baseUrl}");
+
             var results = new List<(string Api, decimal? Result)>
             {
-                ("ONE", await _serviceOne.GetExchangeAsync(request, url)),
-                ("TWO", await _serviceTwo.GetExchangeAsync(request, url)),
-                ("THREE", await _serviceThree.GetExchangeAsync(request, url))
+                ("ONE", await _serviceOne.GetExchangeAsync(request, baseUrl)),
+                ("TWO", await _serviceTwo.GetExchangeAsync(request, baseUrl)),
+                ("THREE", await _serviceThree.GetExchangeAsync(request, baseUrl))
             };
 
             foreach (var result in results)

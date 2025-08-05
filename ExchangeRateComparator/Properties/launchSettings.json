@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ExchangeRateComparator": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

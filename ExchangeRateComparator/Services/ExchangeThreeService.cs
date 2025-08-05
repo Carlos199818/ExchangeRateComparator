@@ -20,7 +20,7 @@ namespace ExchangeRateComparator.Services
 
         public async Task<decimal?> GetExchangeAsync(ExchangeRateRequest dto, string url)
         {
-            var endpoint = $"{url}api/exchange-three";
+            var endpoint = $"{url}exchange-three";
 
             var options = new JsonSerializerOptions
             {

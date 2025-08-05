@@ -20,7 +20,7 @@ namespace ExchangeRateComparator.Services
 
         public async Task<decimal?> GetExchangeAsync(ExchangeRateRequest dto, string url)
         {
-            var endpoint = $"{url}api/exchange-one";
+            var endpoint = $"{url}exchange-one";
             var json = JsonSerializer.Serialize(dto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 

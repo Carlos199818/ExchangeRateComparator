@@ -21,7 +21,7 @@ namespace ExchangeRateComparator.Services
 
         public async Task<decimal?> GetExchangeAsync(ExchangeRateRequest dto, string url)
         {
-            var endpoint = $"{url}api/exchange-two";
+            var endpoint = $"{url}exchange-two";
             var xmlRequest = new XmlDTO
             {
                 SourceCurrency = dto.SourceCurrency,
