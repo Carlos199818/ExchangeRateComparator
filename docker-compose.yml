@@ -1,5 +1,5 @@
 services:
-  webapi:
+  webapitestbanre:
     build:
       context: ./ExchangeRateWebApi
       dockerfile: Dockerfile
@@ -8,14 +8,14 @@ services:
     networks:
       - exchangenet
 
-  console:
+  consoletestbanre:
     build:
       context: ./ExchangeRateComparator
       dockerfile: Dockerfile
     depends_on:
-      - webapi
+      - webapitestbanre
     environment:
-      API_BASE_URL: http://webapi:5039/api/
+      API_BASE_URL: http://webapitestbanre:5039/api/
     networks:
       - exchangenet
     stdin_open: true

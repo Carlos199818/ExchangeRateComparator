@@ -13,6 +13,16 @@ namespace ExchangeRateComparator.Helpers
         {
             var currencies = new[] { "DOP", "USD", "EUR" };
 
+            if (currency?.SourceCurrency == null || currency?.TargetCurrency == null)
+            {
+                return "Moneda no válida";
+            }
+
+            if (currency.SourceCurrency == currency.TargetCurrency)
+            {
+                return "Monedas iguales";
+            }
+
             if (!currencies.Contains(currency.SourceCurrency.ToUpper()) || !currencies.Contains(currency.TargetCurrency.ToUpper()))
             {
                 return null;
